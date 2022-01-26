@@ -39,17 +39,18 @@ defmodule Tagarelx.Core.Score do
   def print(%__MODULE__{grays: grays, greens: greens, yellows: yellows}) do
     gray =
       Enum.map(grays, fn {letter, position} ->
-        {"#{IO.ANSI.color_background(244)}#{<<letter>>}#{IO.ANSI.reset()}", position}
+        {"#{IO.ANSI.color_background(244)}#{List.to_string([letter])}#{IO.ANSI.reset()}",
+         position}
       end)
 
     green =
       Enum.map(greens, fn {letter, position} ->
-        {"#{IO.ANSI.green_background()}#{<<letter>>}#{IO.ANSI.reset()}", position}
+        {"#{IO.ANSI.green_background()}#{List.to_string([letter])}#{IO.ANSI.reset()}", position}
       end)
 
     yellow =
       Enum.map(yellows, fn {letter, position} ->
-        {"#{IO.ANSI.yellow_background()}#{<<letter>>}#{IO.ANSI.reset()}", position}
+        {"#{IO.ANSI.yellow_background()}#{List.to_string([letter])}#{IO.ANSI.reset()}", position}
       end)
 
     (gray ++ green ++ yellow)
