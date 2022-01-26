@@ -26,6 +26,39 @@ defmodule Tagarelx.Core.Score do
       grays: grays(answer, guess)
     }
 
+  @spec to_str(%__MODULE__{}) :: binary()
+  def to_str(%__MODULE__{grays: grays, greens: greens, yellows: yellows}) do
+    """
+      Grays: #{Enum.map(grays, &elem(&1, 1)) |> Enum.join(", ")}
+      Greens: #{Enum.map(greens, &elem(&1, 1)) |> Enum.join(", ")}
+      Yellows: #{Enum.map(yellows, &elem(&1, 1)) |> Enum.join(", ")}\
+    """
+  end
+
+  @spec print(%__MODULE__{}) :: :ok
+  def print(%__MODULE__{grays: grays, greens: greens, yellows: yellows}) do
+    gray =
+      Enum.map(grays, fn {letter, position} ->
+        {"#{IO.ANSI.color_background(244)}#{<<letter>>}#{IO.ANSI.reset()}", position}
+      end)
+
+    green =
+      Enum.map(greens, fn {letter, position} ->
+        {"#{IO.ANSI.green_background()}#{<<letter>>}#{IO.ANSI.reset()}", position}
+      end)
+
+    yellow =
+      Enum.map(yellows, fn {letter, position} ->
+        {"#{IO.ANSI.yellow_background()}#{<<letter>>}#{IO.ANSI.reset()}", position}
+      end)
+
+    (gray ++ green ++ yellow)
+    |> Enum.sort(&(elem(&1, 1) <= elem(&2, 1)))
+    |> Enum.map(&elem(&1, 0))
+    |> Enum.join()
+    |> IO.puts()
+  end
+
   defp greens(answer, guess) do
     answer
     |> Enum.with_index()
@@ -45,18 +78,17 @@ defmodule Tagarelx.Core.Score do
   end
 
   defp grays(answer, guess) do
-    grays = guess -- answer
-
     guess
     |> Enum.with_index()
-    |> Enum.reduce(grays, fn {letter, _pos} = letter_position, grays ->
-      case letter in grays do
+    |> Enum.reduce(answer, fn {letter, _pos} = letter_position, answer ->
+      case letter in answer do
         true ->
-          (grays -- [letter]) ++ [letter_position]
+          answer -- [letter]
 
         false ->
-          grays
+          (answer -- [letter]) ++ [letter_position]
       end
     end)
+    |> Enum.filter(&is_tuple/1)
   end
 end

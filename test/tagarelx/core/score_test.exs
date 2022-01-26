@@ -29,8 +29,8 @@ defmodule Tagarelx.Core.ScoreTest do
       answer = "answe"
       guess = "guess"
 
-      yellows = [{?e, 2}, {?s, 4}]
-      grays = [{?g, 0}, {?u, 1}, {?s, 3}]
+      yellows = [{?e, 2}, {?s, 3}]
+      grays = [{?g, 0}, {?u, 1}, {?s, 4}]
 
       assert %Score{
                greens: '',
