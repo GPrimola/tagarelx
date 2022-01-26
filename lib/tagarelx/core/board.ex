@@ -2,29 +2,18 @@ defmodule Tagarelx.Core.Board do
   defstruct [:answer, guesses: []]
 
   @type t :: %__MODULE__{}
-  @type guess :: binary() | charlist()
+  @type word :: binary()
 
   @total_tries 6
 
-  @spec new(answer :: binary() | charlist()) :: t()
+  @spec new(answer :: word()) :: t()
   def new(answer)
 
   def new(answer) when is_binary(answer),
-    do:
-      answer
-      |> String.to_charlist()
-      |> new()
-
-  def new(answer) when is_list(answer) and length(answer) == 5,
     do: %__MODULE__{answer: answer}
 
-  @spec move(t(), guess()) :: t()
-  def move(board, guess)
-
-  def move(board, guess) when is_binary(guess),
-    do: move(board, String.to_charlist(guess))
-
-  def move(%{guesses: guesses} = board, guess) when is_list(guess) and length(guess) == 5,
+  @spec move(t(), word()) :: t()
+  def move(%{guesses: guesses} = board, guess) when is_binary(guess),
     do: %{board | guesses: [guess | guesses]}
 
   @spec won?(t()) :: boolean()

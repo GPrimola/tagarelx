@@ -4,44 +4,23 @@ defmodule Tagarelx.Core.BoardTest do
   alias Tagarelx.Core.Board
 
   describe "new/1" do
-    test "should return a Board struct with no guesses when the provided answer is list" do
-      answer = ['a', 'n', 's', 'w', 'e']
+    test "should return a Board struct with no guesses when the provided answer is string" do
+      answer = "answe"
 
       board = Board.new(answer)
-
-      assert %Board{answer: ^answer, guesses: []} = board
-    end
-
-    test "should return a Board struct with no guesses when the provided answer is string" do
-      answer_str = "answe"
-      answer = String.to_charlist(answer_str)
-
-      board = Board.new(answer_str)
 
       assert %Board{answer: ^answer, guesses: []} = board
     end
   end
 
   describe "move/2" do
-    test "should add a guess to board's guesses list when given guess is charlist" do
+    test "should add a guess to board's guesses list when given guess is binary" do
       answer = "answe"
-      guess = ['g', 'u', 'e', 's', 's']
+      guess = "guess"
 
       board =
         Board.new(answer)
         |> Board.move(guess)
-
-      assert %Board{guesses: [^guess]} = board
-    end
-
-    test "should convert a guess to charlist and add it to board's guesses list when given guess is binary" do
-      answer = "answe"
-      guess_str = "guess"
-      guess = String.to_charlist(guess_str)
-
-      board =
-        Board.new(answer)
-        |> Board.move(guess_str)
 
       assert %Board{guesses: [^guess]} = board
     end
