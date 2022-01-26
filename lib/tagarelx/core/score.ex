@@ -8,7 +8,7 @@ defmodule Tagarelx.Core.Score do
 
   def new(%Board{answer: answer, guesses: [guess | _rest]}), do: new(answer, guess)
 
-  @spec new(binary(), binary()) :: t()
+  @spec new(binary() | charlist(), binary() | charlist()) :: t()
   def new(answer, guess)
 
   def new(answer, guess) when is_binary(answer) do
