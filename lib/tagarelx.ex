@@ -2,17 +2,12 @@ defmodule Tagarelx do
   @moduledoc """
   Documentation for `Tagarelx`.
   """
+  alias Tagarelx.Boundary.Server, as: Game
 
-  @doc """
-  Hello world.
+  def add_game(name) when is_binary(name),
+    do: add_game(String.to_atom(name))
 
-  ## Examples
-
-      iex> Tagarelx.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def add_game(name) do
+    DynamicSupervisor.start_child(MultiplayerServer, {Game, name})
   end
 end
